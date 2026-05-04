@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Philosophy — Mindloop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden}
+::selection{background:#fff;color:#000}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:#000}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.18);border-radius:2px}
+
+.glass{background:rgba(255,255,255,.025);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);position:relative;overflow:hidden;box-shadow:inset 0 1.5px 0 rgba(255,255,255,.12),inset 0 -1px 0 rgba(255,255,255,.04)}
+.glass::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(145deg,rgba(255,255,255,.28) 0%,rgba(255,255,255,.06) 40%,rgba(255,255,255,0) 65%,rgba(255,255,255,.1) 100%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+
+@keyframes orb1{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(60px,-50px) scale(1.1)}66%{transform:translate(-40px,60px) scale(.94)}}
+@keyframes orb2{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(-70px,45px) scale(1.08)}66%{transform:translate(55px,-65px) scale(.92)}}
+@keyframes orb3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-30px,-40px) scale(1.1)}}
+@keyframes scanH{from{transform:translateY(-100%)}to{transform:translateY(100vh)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes grain{0%,100%{background-position:0 0}10%{background-position:-4% -3%}25%{background-position:3% 4%}50%{background-position:-2% 5%}75%{background-position:4% -2%}90%{background-position:-5% 3%}}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:.85}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes lineGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes wordIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* ─── Nav ─── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:18px clamp(20px,7vw,112px)}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff}
+.logo-rings{position:relative;width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-rings .r1{position:absolute;width:28px;height:28px;border-radius:50%;border:2px solid rgba(255,255,255,.5)}
+.logo-rings .r2{width:12px;height:12px;border-radius:50%;border:1.5px solid rgba(255,255,255,.5)}
+.logo-name{font-weight:700;font-size:14px}
+.nl{display:flex;align-items:center;gap:12px;font-size:13px}
+.nl a{color:rgba(255,255,255,.48);text-decoration:none;transition:color .2s}
+.nl a:hover,.nl a.active{color:#fff}
+.dot{color:rgba(255,255,255,.16);font-size:9px}
+.soc{display:flex;gap:7px}
+.sb{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;background:none;border:none;color:rgba(255,255,255,.45);transition:color .2s,transform .18s}
+.sb:hover{color:#fff;transform:scale(1.1)}
+.sb svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* ─── Page hero ─── */
+.page-hero{position:relative;min-height:72vh;display:flex;align-items:flex-end;padding:0 clamp(24px,7vw,112px) 72px;overflow:hidden}
+.phbg{position:absolute;inset:0;background:#000;overflow:hidden}
+.phbg .o1{position:absolute;width:900px;height:900px;top:-350px;left:-200px;background:radial-gradient(circle,rgba(255,255,255,.07) 0%,transparent 65%);filter:blur(80px);animation:orb1 24s ease-in-out infinite;border-radius:50%}
+.phbg .o2{position:absolute;width:600px;height:600px;bottom:-200px;right:-150px;background:radial-gradient(circle,rgba(200,200,180,.055) 0%,transparent 65%);filter:blur(70px);animation:orb2 20s ease-in-out infinite;border-radius:50%}
+.phbg .o3{position:absolute;width:400px;height:400px;top:30%;left:50%;background:radial-gradient(circle,rgba(255,255,255,.04) 0%,transparent 65%);filter:blur(50px);animation:orb3 16s ease-in-out infinite;border-radius:50%}
+.phbg .grain{position:absolute;inset:0;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)'/%3E%3C/svg%3E");background-size:256px 256px;animation:grain 1.1s steps(1) infinite}
+.phbg .grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:80px 80px;mask-image:radial-gradient(ellipse 60% 70% at 30% 50%,black 10%,transparent 80%)}
+.phbg .scan{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.07),transparent);animation:scanH 14s linear infinite;top:0}
+.phbg .fade{position:absolute;bottom:0;left:0;right:0;height:220px;background:linear-gradient(to top,#000,transparent)}
+.page-hero-inner{position:relative;z-index:2;max-width:900px}
+.breadcrumb{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.32);margin-bottom:28px;animation:fadeUp .6s .1s ease forwards;opacity:0}
+.ph1{font-size:clamp(44px,8.5vw,96px);font-weight:500;letter-spacing:-2.8px;line-height:1.01;margin-bottom:24px;animation:fadeUp .7s .22s ease forwards;opacity:0}
+.ph1 em{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400}
+.ph-sub{font-size:18px;line-height:1.72;color:rgba(255,255,255,.5);max-width:580px;animation:fadeUp .7s .38s ease forwards;opacity:0}
+
+/* ─── Shared ─── */
+.sec{padding-left:clamp(24px,7vw,112px);padding-right:clamp(24px,7vw,112px)}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+.reveal.vis{opacity:1;transform:none}
+.d1{transition-delay:.1s}.d2{transition-delay:.22s}.d3{transition-delay:.32s}.d4{transition-delay:.44s}.d5{transition-delay:.54s}
+
+/* ─── Opening quote ─── */
+.opening{padding-top:96px;padding-bottom:80px;border-bottom:1px solid rgba(255,255,255,.07)}
+.opening-inner{max-width:760px}
+.open-line{width:40px;height:1px;background:rgba(255,255,255,.3);margin-bottom:32px}
+.open-quote{font-size:clamp(22px,3.5vw,40px);font-family:'Instrument Serif',serif;font-style:italic;line-height:1.45;color:#dde4ef;margin-bottom:24px}
+.open-attr{font-size:13px;color:rgba(255,255,255,.35);letter-spacing:.5px}
+
+/* ─── Beliefs ─── */
+.beliefs{padding-top:96px;padding-bottom:96px}
+.beliefs-header{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;margin-bottom:72px}
+.beliefs-label{font-size:11px;letter-spacing:3.5px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:18px}
+.beliefs-h{font-size:clamp(28px,4vw,52px);font-weight:500;letter-spacing:-1.5px;line-height:1.08}
+.beliefs-h em{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400}
+.beliefs-intro{color:rgba(255,255,255,.45);font-size:15px;line-height:1.78;padding-top:8px}
+.beliefs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.07);border-radius:20px;overflow:hidden}
+.belief{background:#000;padding:36px 32px;display:flex;flex-direction:column;gap:14px;transition:background .3s}
+.belief:hover{background:#080808}
+.belief-n{font-size:48px;font-weight:700;color:rgba(255,255,255,.06);letter-spacing:-2px;line-height:1;margin-bottom:-4px}
+.belief-icon{width:38px;height:38px;border-radius:10px;border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center}
+.belief-icon svg{width:17px;height:17px;stroke:rgba(255,255,255,.55);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.belief-title{font-weight:600;font-size:15px;line-height:1.3}
+.belief-desc{color:rgba(255,255,255,.42);font-size:13px;line-height:1.72}
+
+/* ─── Essay-style manifesto ─── */
+.manifesto{padding-top:0;padding-bottom:96px;border-top:1px solid rgba(255,255,255,.07);padding-top:80px}
+.manifesto-label{font-size:11px;letter-spacing:3.5px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:56px}
+.manifesto-body{display:grid;grid-template-columns:240px 1fr;gap:80px;align-items:start}
+.manifesto-nav{display:flex;flex-direction:column;gap:4px;position:sticky;top:100px}
+.mani-link{font-size:13px;color:rgba(255,255,255,.32);text-decoration:none;padding:6px 0;border-left:1px solid rgba(255,255,255,.08);padding-left:16px;transition:color .2s,border-color .2s}
+.mani-link:hover,.mani-link.active{color:#fff;border-color:rgba(255,255,255,.5)}
+.manifesto-text{}
+.mani-section{margin-bottom:64px}
+.mani-section:last-child{margin-bottom:0}
+.mani-h{font-size:clamp(22px,3vw,34px);font-weight:500;letter-spacing:-1px;line-height:1.15;margin-bottom:22px}
+.mani-h em{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400}
+.mani-p{color:rgba(255,255,255,.52);font-size:15px;line-height:1.82;margin-bottom:16px}
+.mani-p:last-child{margin-bottom:0}
+.mani-pull{font-size:clamp(18px,2.2vw,26px);font-family:'Instrument Serif',serif;font-style:italic;color:rgba(255,255,255,.7);line-height:1.5;border-left:2px solid rgba(255,255,255,.2);padding-left:24px;margin:28px 0}
+
+/* ─── Values comparison ─── */
+.values{padding-top:0;padding-bottom:96px}
+.values-label{font-size:11px;letter-spacing:3.5px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:20px}
+.values-h{font-size:clamp(28px,4vw,52px);font-weight:500;letter-spacing:-1.5px;margin-bottom:52px}
+.values-h em{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400}
+.values-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.val-col{border-radius:18px;overflow:hidden}
+.val-col-head{padding:20px 28px;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);border-bottom:1px solid rgba(255,255,255,.07)}
+.val-col.good .val-col-head{color:rgba(255,255,255,.7)}
+.val-items{display:flex;flex-direction:column}
+.val-item{display:flex;align-items:flex-start;gap:12px;padding:18px 28px;border-bottom:1px solid rgba(255,255,255,.05);font-size:14px;line-height:1.5}
+.val-item:last-child{border-bottom:none}
+.val-icon{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.val-col.good .val-icon{background:rgba(255,255,255,.12)}
+.val-col.bad .val-icon{background:rgba(255,255,255,.05)}
+.val-col.good .val-item{color:rgba(255,255,255,.72)}
+.val-col.bad .val-item{color:rgba(255,255,255,.32)}
+.val-icon svg{width:9px;height:9px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.val-col.good .val-icon svg{color:rgba(255,255,255,.9)}
+.val-col.bad .val-icon svg{color:rgba(255,255,255,.3)}
+
+/* ─── Team / numbers ─── */
+.numbers{padding-top:0;padding-bottom:96px;border-top:1px solid rgba(255,255,255,.07);padding-top:72px}
+.numbers-h{font-size:clamp(22px,3vw,36px);font-weight:500;letter-spacing:-1px;margin-bottom:48px}
+.numbers-h em{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400}
+.nums-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.07);border-radius:18px;overflow:hidden}
+.num-cell{background:#000;padding:36px 28px}
+.num-n{font-size:clamp(36px,5vw,56px);font-weight:700;letter-spacing:-2px;line-height:1;margin-bottom:8px}
+.num-n em{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;font-size:80%}
+.num-l{color:rgba(255,255,255,.4);font-size:13px;line-height:1.5}
+
+/* ─── CTA banner ─── */
+.cta-banner{margin:0 clamp(24px,7vw,112px);margin-bottom:clamp(80px,10vw,140px);border-radius:22px;overflow:hidden;position:relative;padding:64px 56px;text-align:center}
+.cta-b-bg{position:absolute;inset:0;background:#070707}
+.cta-b-o1{position:absolute;width:700px;height:400px;background:radial-gradient(circle,rgba(255,255,255,.07),transparent 68%);top:-150px;left:-150px;filter:blur(60px);animation:orb1 20s ease-in-out infinite;border-radius:50%}
+.cta-b-o2{position:absolute;width:600px;height:400px;background:radial-gradient(circle,rgba(200,200,180,.06),transparent 68%);bottom:-100px;right:-100px;filter:blur(60px);animation:orb2 24s ease-in-out infinite;border-radius:50%}
+.cta-b-grain{position:absolute;inset:0;opacity:.04;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px 200px;animation:grain 1.2s steps(1) infinite}
+.cta-b-cnt{position:relative;z-index:1}
+.cta-b-logo{width:40px;height:40px;border-radius:50%;border:2px solid rgba(255,255,255,.35);display:flex;align-items:center;justify-content:center;margin:0 auto 22px;animation:pulse 3.5s ease-in-out infinite}
+.cta-b-logo-in{width:18px;height:18px;border-radius:50%;border:1.5px solid rgba(255,255,255,.35)}
+.cta-b-h{font-size:clamp(24px,4vw,46px);font-weight:500;letter-spacing:-1.2px;margin-bottom:14px}
+.cta-b-h em{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400}
+.cta-b-sub{color:rgba(255,255,255,.42);font-size:15px;max-width:360px;margin:0 auto 28px;line-height:1.65}
+.cta-b-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.btnp{background:#fff;color:#000;border:none;border-radius:10px;padding:13px 28px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:transform .15s,box-shadow .2s}
+.btnp:hover{transform:scale(1.04);box-shadow:0 0 28px rgba(255,255,255,.18)}
+.btng{border-radius:10px;padding:13px 28px;font-size:13px;font-weight:600;cursor:pointer;color:#fff;background:none;border:none;font-family:'Inter',sans-serif;transition:transform .15s}
+.btng:hover{transform:scale(1.04)}
+footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;padding:36px clamp(24px,7vw,112px);border-top:1px solid rgba(255,255,255,.05)}
+.fcopy{color:rgba(255,255,255,.35);font-size:13px}
+.flinks{display:flex;gap:22px}
+.flinks a{color:rgba(255,255,255,.35);font-size:13px;text-decoration:none;transition:color .2s}
+.flinks a:hover{color:#fff}
+
+@media(max-width:768px){
+  .beliefs-header{grid-template-columns:1fr;gap:24px}
+  .manifesto-body{grid-template-columns:1fr}
+  .manifesto-nav{display:none}
+  .values-grid{grid-template-columns:1fr}
+  .nl{display:none}
+  footer{flex-direction:column;text-align:center}
+  .cta-banner{padding:40px 24px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html">
+    <div class="logo-rings"><div class="r1"></div><div class="r2"></div></div>
+    <span class="logo-name">Mindloop</span>
+  </a>
+  <div class="nl">
+    <a href="index.html">Home</a><span class="dot">•</span>
+    <a href="how-it-works.html">How It Works</a><span class="dot">•</span>
+    <a href="philosophy.html" class="active">Philosophy</a><span class="dot">•</span>
+    <a href="use-cases.html">Use Cases</a>
+  </div>
+  <div class="soc">
+    <button class="sb glass"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor" stroke="none"/></svg></button>
+    <button class="sb glass"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></button>
+    <button class="sb glass"><svg viewBox="0 0 24 24"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.4 5.6 3.9 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg></button>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="phbg"><div class="o1"></div><div class="o2"></div><div class="o3"></div><div class="grain"></div><div class="grid"></div><div class="scan"></div><div class="fade"></div></div>
+  <div class="page-hero-inner">
+    <div class="breadcrumb">PHILOSOPHY</div>
+    <h1 class="ph1">We believe the internet deserves <em>better writing</em></h1>
+    <p class="ph-sub">Mindloop is built on a set of convictions about attention, depth, and what it means to create something worth reading. This is where we explain ourselves.</p>
+  </div>
+</div>
+
+<!-- OPENING QUOTE -->
+<section class="sec opening">
+  <div class="opening-inner reveal">
+    <div class="open-line"></div>
+    <p class="open-quote">"The goal of writing is to slow the reader down — to make them pause, feel the weight of an idea, and carry it somewhere new."</p>
+    <p class="open-attr">— The Mindloop Team, 2024</p>
+  </div>
+</section>
+
+<!-- BELIEFS -->
+<section class="sec beliefs">
+  <div class="beliefs-header">
+    <div class="reveal">
+      <div class="beliefs-label">WHAT WE BELIEVE</div>
+      <h2 class="beliefs-h">Six <em>principles</em><br>that guide everything</h2>
+    </div>
+    <p class="beliefs-intro reveal d1">We built Mindloop because we were frustrated. Not with writing — with the platforms. Every decision we make comes back to these beliefs.</p>
+  </div>
+  <div class="beliefs-grid reveal d2">
+    <div class="belief">
+      <div class="belief-n">01</div>
+      <div class="belief-icon"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
+      <div class="belief-title">Attention is sacred</div>
+      <div class="belief-desc">We will never compete for your attention with algorithms, infinite scroll, or notification spam. Your focus belongs to you.</div>
+    </div>
+    <div class="belief">
+      <div class="belief-n">02</div>
+      <div class="belief-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <div class="belief-title">Privacy is non-negotiable</div>
+      <div class="belief-desc">We don't sell data. We don't serve ads. We don't harvest your reading habits to build profiles. Full stop.</div>
+    </div>
+    <div class="belief">
+      <div class="belief-n">03</div>
+      <div class="belief-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <div class="belief-title">Writers deserve economics</div>
+      <div class="belief-desc">If your work creates value, you should share in it. Our revenue model puts writers first — not advertisers, not platforms.</div>
+    </div>
+    <div class="belief">
+      <div class="belief-n">04</div>
+      <div class="belief-icon"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+      <div class="belief-title">Quality over quantity</div>
+      <div class="belief-desc">We would rather surface ten remarkable pieces than ten thousand forgettable ones. Curation is a form of respect.</div>
+    </div>
+    <div class="belief">
+      <div class="belief-n">05</div>
+      <div class="belief-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+      <div class="belief-title">Conversation over broadcast</div>
+      <div class="belief-desc">The best newsletters aren't broadcasts — they're letters. We build tools that help writers speak to, not at, their readers.</div>
+    </div>
+    <div class="belief">
+      <div class="belief-n">06</div>
+      <div class="belief-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+      <div class="belief-title">Depth takes time</div>
+      <div class="belief-desc">We are not optimizing for speed. Good writing takes time. Good reading takes time. Mindloop makes space for both.</div>
+    </div>
+  </div>
+</section>
+
+<!-- MANIFESTO -->
+<section class="sec manifesto">
+  <p class="manifesto-label reveal">OUR THINKING</p>
+  <div class="manifesto-body">
+    <nav class="manifesto-nav reveal">
+      <a class="mani-link active" href="#noise">On Noise</a>
+      <a class="mani-link" href="#depth">On Depth</a>
+      <a class="mani-link" href="#writers">On Writers</a>
+      <a class="mani-link" href="#future">On the Future</a>
+    </nav>
+    <div class="manifesto-text">
+      <div class="mani-section reveal" id="noise">
+        <h3 class="mani-h">On <em>noise</em></h3>
+        <p class="mani-p">The internet is not short of content. It is short of signal. Every platform built in the last decade has optimised for engagement — which turns out to mean anxiety, outrage, and compulsion. The metrics look good. The humans feel worse.</p>
+        <p class="mani-p">We don't think this was inevitable. It was a choice — a business model, dressed up as a product. And we've made different choices.</p>
+        <div class="mani-pull">"When everything is urgent, nothing is. When everything competes for your eye, nothing gets your mind."</div>
+        <p class="mani-p">Mindloop has no algorithmic feed designed to maximise time-on-site. What you see is what you chose to follow. Nothing fights for your attention that you didn't invite in.</p>
+      </div>
+      <div class="mani-section reveal" id="depth">
+        <h3 class="mani-h">On <em>depth</em></h3>
+        <p class="mani-p">There is a particular satisfaction in finishing something. A long essay, a well-argued case, a narrative that earned its ending. That satisfaction is rare online — not because people don't want it, but because most platforms are designed to interrupt it.</p>
+        <p class="mani-p">We think depth is a feature, not a niche. The newsletters that grow on Mindloop aren't the ones that post most often — they're the ones that make readers feel something when they finish.</p>
+        <div class="mani-pull">"Depth is not about length. It's about the feeling that a writer took you seriously."</div>
+        <p class="mani-p">So we build for that. Minimal reading interfaces. Reading time estimates. Progress tracking. Saved highlights. Tools that help you engage, not just consume.</p>
+      </div>
+      <div class="mani-section reveal" id="writers">
+        <h3 class="mani-h">On <em>writers</em></h3>
+        <p class="mani-p">Writers have been poorly served by the internet. Social platforms extracted their content and kept the profits. Search rewarded volume over quality. Now AI threatens to replace them entirely — or so we're told.</p>
+        <p class="mani-p">We believe the opposite. The age of AI is the age of the trusted voice. When content becomes cheap and infinite, what becomes precious is knowing who you can believe. Writers who have spent years building a relationship with their readers have something no model can replicate.</p>
+        <p class="mani-p">Mindloop exists to make that relationship sustainable — financially, emotionally, technically. We take a small share so writers can take the rest. We provide the tools so they can focus on the writing.</p>
+      </div>
+      <div class="mani-section reveal" id="future">
+        <h3 class="mani-h">On the <em>future</em></h3>
+        <p class="mani-p">We don't know exactly what publishing looks like in ten years. But we're confident in a few things: people will always want to read writing that respects their intelligence. Writers will always need a place to reach the people who care about their work. And the gap between those two things will always need a platform to bridge it.</p>
+        <p class="mani-p">That's what we're building. Not a feed. Not a social network. Not an AI content factory. A platform that takes writing — and the act of reading it — seriously.</p>
+        <div class="mani-pull">"The best version of the internet is one where ideas move freely between people who seek them. We're trying to build a small piece of that."</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES COMPARISON -->
+<section class="sec values">
+  <div class="values-label reveal">HOW WE'RE DIFFERENT</div>
+  <h2 class="values-h reveal d1">What we do — and what we <em>don't</em></h2>
+  <div class="values-grid reveal d2">
+    <div class="val-col good glass">
+      <div class="val-col-head">Mindloop</div>
+      <div class="val-items">
+        <div class="val-item"><div class="val-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>Chronological feed you control</div>
+        <div class="val-item"><div class="val-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>No ads, ever</div>
+        <div class="val-item"><div class="val-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>Writers keep 90%+ of revenue</div>
+        <div class="val-item"><div class="val-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>Data stays with you, always</div>
+        <div class="val-item"><div class="val-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>Reading-first design</div>
+        <div class="val-item"><div class="val-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>Offline reading & audio</div>
+        <div class="val-item"><div class="val-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>Human curation & discovery</div>
+      </div>
+    </div>
+    <div class="val-col bad glass">
+      <div class="val-col-head">Most platforms</div>
+      <div class="val-items">
+        <div class="val-item"><div class="val-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>Algorithm optimised for engagement</div>
+        <div class="val-item"><div class="val-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>Ad revenue model shapes what's shown</div>
+        <div class="val-item"><div class="val-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>Platform takes 30–50% of subscriptions</div>
+        <div class="val-item"><div class="val-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>Reading data sold or profiled</div>
+        <div class="val-item"><div class="val-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>Publishing tools bolted onto social UX</div>
+        <div class="val-item"><div class="val-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>Internet connection required</div>
+        <div class="val-item"><div class="val-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>Viral over valuable</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NUMBERS -->
+<section class="sec numbers">
+  <h2 class="numbers-h reveal">Mindloop by the <em>numbers</em></h2>
+  <div class="nums-grid reveal d1">
+    <div class="num-cell"><div class="num-n">7<em>k+</em></div><div class="num-l">Active readers across 40+ countries</div></div>
+    <div class="num-cell"><div class="num-n">340<em>+</em></div><div class="num-l">Active writers publishing on the platform</div></div>
+    <div class="num-cell"><div class="num-n">68<em>%</em></div><div class="num-l">Average newsletter open rate (industry avg: 22%)</div></div>
+    <div class="num-cell"><div class="num-n">0</div><div class="num-l">Ads served. Zero. That's not changing.</div></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-banner reveal">
+  <div class="cta-b-bg"></div><div class="cta-b-o1"></div><div class="cta-b-o2"></div><div class="cta-b-grain"></div>
+  <div class="cta-b-cnt">
+    <div class="cta-b-logo"><div class="cta-b-logo-in"></div></div>
+    <h2 class="cta-b-h">Share our <em>philosophy?</em></h2>
+    <p class="cta-b-sub">Join a platform that takes your attention — and your words — seriously.</p>
+    <div class="cta-b-btns">
+      <button class="btnp" onclick="window.location.href='index.html'">Start Reading Free</button>
+      <button class="btng glass" onclick="window.location.href='how-it-works.html'">See How It Works</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="fcopy">© 2026 Mindloop. All rights reserved.</div>
+  <div class="flinks"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Contact</a></div>
+</footer>
+
+<script>
+// Intersection observer
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis')})},{threshold:.06,rootMargin:'-40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// Manifesto nav active state
+const sections=document.querySelectorAll('.mani-section');
+const links=document.querySelectorAll('.mani-link');
+const scrollObs=new IntersectionObserver(es=>{
+  es.forEach(e=>{
+    if(e.isIntersecting){
+      links.forEach(l=>l.classList.remove('active'));
+      const link=document.querySelector(`.mani-link[href="#${e.target.id}"]`);
+      if(link)link.classList.add('active');
+    }
+  });
+},{threshold:.5});
+sections.forEach(s=>scrollObs.observe(s));
+</script>
+</body>
+</html>
